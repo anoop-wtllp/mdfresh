@@ -5,8 +5,6 @@ import { motion } from "framer-motion";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { CLIP_DURATION, JOURNEY } from "@/lib/media";
 
-/** Viewport heights of scrolling spent on each chapter. */
-const SCROLL_PER_CHAPTER = 0.9;
 /** Seconds of drift tolerated before we issue a new seek. */
 const SEEK_EPSILON = 0.035;
 /** Share of the remaining distance closed per 60Hz frame. */
@@ -246,7 +244,10 @@ export function JourneyFilm() {
   }, []);
 
   const chapter = JOURNEY[active];
-  const runwayHeight = `calc(100svh + ${JOURNEY.length * SCROLL_PER_CHAPTER} * 100svh)`;
+  // Per-chapter scroll distance lives in CSS (--chapter-scroll) so it can
+  // respond to breakpoint without re-rendering; ScrollTrigger re-measures the
+  // real layout on resize either way.
+  const runwayHeight = `calc(100svh + ${JOURNEY.length} * var(--chapter-scroll) * 100svh)`;
 
   return (
     <section
@@ -288,7 +289,7 @@ export function JourneyFilm() {
             coherent block instead of six stacked ones. */}
         <div
           data-parallax
-          className="absolute inset-0 flex items-end pb-28 sm:items-center sm:pb-0"
+          className="absolute inset-0 flex items-end pb-36 sm:items-center sm:pb-0"
         >
           <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
             <div className="max-w-xl">
@@ -362,8 +363,59 @@ export function JourneyFilm() {
           </ol>
         </nav>
 
+        {/* Below lg the vertical rail has nowhere to live, so chapter
+            navigation becomes a full-width segment bar. Same buttons, same
+            jump targets — a scroll-driven section must stay navigable on a
+            phone, not just on a desktop. */}
+        <nav
+          aria-label="Film chapters"
+          className="absolute inset-x-0 bottom-0 px-4 pb-4 lg:hidden"
+        >
+          <div className="rounded-2xl bg-ink/85 px-3 py-2 ring-1 ring-frost/10 backdrop-blur-md">
+            <div className="flex items-center justify-between px-1 pb-1.5">
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-pea-bright">
+                {chapter.index} &middot; {chapter.label}
+              </span>
+              <span
+                aria-hidden="true"
+                className={
+                  started
+                    ? "font-mono text-[10px] uppercase tracking-[0.2em] text-frost-mute opacity-0 transition-opacity duration-500"
+                    : "font-mono text-[10px] uppercase tracking-[0.2em] text-frost-mute opacity-100 transition-opacity duration-500"
+                }
+              >
+                Scroll to play
+              </span>
+            </div>
+            <ol className="flex items-stretch gap-1.5">
+              {JOURNEY.map((c, i) => (
+                <li key={c.id} className="flex-1">
+                  <button
+                    type="button"
+                    onClick={() => goToChapter(i)}
+                    aria-current={i === active ? "step" : undefined}
+                    className="flex h-11 w-full items-center"
+                  >
+                    <span className="sr-only">
+                      Chapter {c.index}: {c.label}
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      className={
+                        i === active
+                          ? "block h-1 w-full rounded-full bg-pea-bright transition-colors duration-500"
+                          : "block h-1 w-full rounded-full bg-frost/25 transition-colors duration-500"
+                      }
+                    />
+                  </button>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </nav>
+
         {/* Runtime readout: says this is a film being scrubbed, and how far in. */}
-        <div className="absolute bottom-6 left-6 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.2em] text-frost-mute sm:left-10">
+        <div className="absolute bottom-6 left-6 hidden items-center gap-3 font-mono text-[10px] uppercase tracking-[0.2em] text-frost-mute lg:flex">
           <span aria-hidden="true">
             {String(active + 1).padStart(2, "0")} / {JOURNEY.length}
           </span>

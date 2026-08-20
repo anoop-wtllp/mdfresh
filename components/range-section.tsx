@@ -124,7 +124,7 @@ export function RangeSection() {
                   </span>
 
                   <span className="relative flex flex-1 items-baseline justify-between gap-8 pl-10 sm:pl-0">
-                    <span className="text-sm text-frost-dim">
+                    <span className="text-[0.9375rem] text-frost-dim">
                       {product.detail}
                     </span>
                     <span className="whitespace-nowrap font-mono text-[11px] tracking-wider text-frost-mute">

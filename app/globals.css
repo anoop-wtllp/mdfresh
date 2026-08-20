@@ -39,6 +39,18 @@
 /* ---------------------------------------------------------------------------
    Base
 --------------------------------------------------------------------------- */
+/* Viewport heights of scrolling spent on each film chapter. Shorter on a
+   phone, where the same number of screens is a much longer thumb journey. */
+:root {
+  --chapter-scroll: 0.9;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --chapter-scroll: 0.62;
+  }
+}
+
 html {
   scroll-behavior: smooth;
   /* Anchor jumps must clear the fixed header. */

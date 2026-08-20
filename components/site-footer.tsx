@@ -59,7 +59,7 @@ export function SiteFooter() {
                     <li key={link}>
                       <a
                         href="#contact"
-                        className="text-sm text-frost-dim transition-colors duration-300 hover:text-pea-bright"
+                        className="-my-1.5 inline-flex min-h-11 items-center text-[0.9375rem] text-frost-dim transition-colors duration-300 hover:text-pea-bright"
                       >
                         {link}
                       </a>
@@ -79,7 +79,7 @@ export function SiteFooter() {
             height={72}
             className="h-8 w-auto"
           />
-          <p className="text-xs text-frost-mute">
+          <p className="text-[0.9375rem] text-frost-mute">
             &copy; {new Date().getFullYear()} G-Fresh. Frozen at the peak of
             fresh.
           </p>

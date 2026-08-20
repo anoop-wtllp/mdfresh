@@ -130,7 +130,7 @@ export function ColdChain() {
                   </span>
                   {stat.label}
                 </dt>
-                <dd className="mt-2 text-sm leading-relaxed text-frost-mute">
+                <dd className="mt-2 text-[0.9375rem] leading-relaxed text-frost-mute">
                   {stat.note}
                 </dd>
               </Reveal>

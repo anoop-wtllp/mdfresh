@@ -141,11 +141,11 @@ export function Hero() {
 
       <div
         data-hero-content
-        className="relative flex h-full flex-col justify-end pb-14 sm:pb-20"
+        className="relative flex h-full flex-col justify-end pb-[calc(3rem+env(safe-area-inset-bottom))] sm:pb-20"
       >
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
-          <p data-hero-fade className="eyebrow eyebrow-chip mb-6 text-pea-bright will-reveal">
-            G-Fresh &middot; Individually quick frozen
+          <p data-hero-fade className="eyebrow eyebrow-chip mb-5 text-pea-bright will-reveal sm:mb-6">
+            Individually quick frozen
           </p>
 
           <h1
@@ -163,7 +163,7 @@ export function Hero() {
             </span>
           </h1>
 
-          <div className="mt-10 flex flex-col gap-8 border-t rule pt-8 md:flex-row md:items-end md:justify-between">
+          <div className="mt-7 flex flex-col gap-6 border-t rule pt-6 sm:mt-10 sm:gap-8 sm:pt-8 md:flex-row md:items-end md:justify-between">
             <p
               data-hero-fade
               className="max-w-md text-[length:var(--text-lead)] leading-relaxed text-frost will-reveal"
@@ -175,11 +175,11 @@ export function Hero() {
 
             <div
               data-hero-fade
-              className="flex flex-wrap items-center gap-4 will-reveal"
+              className="flex w-full flex-col gap-3 will-reveal sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:gap-4"
             >
               <a
                 href="#journey"
-                className="group inline-flex items-center gap-3 rounded-full bg-frost px-7 py-3.5 text-sm font-medium text-ink transition-colors duration-300 hover:bg-pea-bright"
+                className="group inline-flex w-full items-center justify-center gap-3 rounded-full bg-frost px-7 py-4 text-sm font-medium text-ink transition-colors duration-300 hover:bg-pea-bright sm:w-auto sm:py-3.5"
               >
                 Watch the journey
                 <span
@@ -191,7 +191,7 @@ export function Hero() {
               </a>
               <a
                 href="#range"
-                className="inline-flex items-center rounded-full border rule px-7 py-3.5 text-sm font-medium text-frost transition-colors duration-300 hover:border-frost/40 hover:bg-frost/5"
+                className="inline-flex w-full items-center justify-center rounded-full border rule px-7 py-4 text-sm font-medium text-frost transition-colors duration-300 hover:border-frost/40 hover:bg-frost/5 sm:w-auto sm:py-3.5"
               >
                 See the range
               </a>

@@ -134,7 +134,7 @@ export const LOOPS: Loop[] = [
     src: `${LOOPS_DIR}/Frozen_peas_cascading_in_motion_202608201226.mp4`,
     caption: "Free-flowing, never clumped",
     alt: "Frozen peas cascading in slow motion.",
-    span: "full",
+    span: "wide",
   },
   {
     id: "floating",
@@ -148,8 +148,13 @@ export const LOOPS: Loop[] = [
 /** The clip behind the hero. */
 export const HERO_CLIP = LOOPS.find((l) => l.id === "floating")!;
 
+/** The clip behind the full-bleed band between sections. */
+export const BAND_CLIP = LOOPS.find((l) => l.id === "fog")!;
+
 /**
- * Gallery tiles. The hero clip is held back so the same footage doesn't play
- * twice on one page.
+ * Gallery tiles: whatever is not already carrying a section of its own. Every
+ * clip in the folder gets exactly one home, so nothing repeats on the page.
  */
-export const GALLERY = LOOPS.filter((l) => l.id !== HERO_CLIP.id);
+export const GALLERY = LOOPS.filter(
+  (l) => l.id !== HERO_CLIP.id && l.id !== BAND_CLIP.id,
+);
