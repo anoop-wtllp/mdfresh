@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { GALLERY, type Loop } from "@/lib/media";
+import { GALLERY, pickSource, type Loop } from "@/lib/media";
 import { Reveal, RevealWords } from "@/components/reveal";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -32,6 +32,8 @@ function LoopTile({ loop, index }: { loop: Loop; index: number }) {
         if (entry.isIntersecting) {
           if (!loadedRef.current) {
             loadedRef.current = true;
+            video.poster = loop.media.poster;
+            video.src = pickSource(loop.media);
             video.preload = "auto";
             video.load();
           }
@@ -46,14 +48,12 @@ function LoopTile({ loop, index }: { loop: Loop; index: number }) {
 
     observer.observe(wrap);
     return () => observer.disconnect();
-  }, []);
+  }, [loop.media]);
 
   const span =
-    loop.span === "full"
-      ? "sm:col-span-2 lg:col-span-3 aspect-16/10 sm:aspect-21/9"
-      : loop.span === "wide"
-        ? "sm:col-span-2 aspect-16/10 sm:aspect-21/9"
-        : "aspect-4/5 sm:aspect-square";
+    loop.span === "wide"
+      ? "sm:col-span-2 aspect-16/10 sm:aspect-21/9"
+      : "aspect-4/5 sm:aspect-square";
 
   return (
     <motion.figure
@@ -66,7 +66,6 @@ function LoopTile({ loop, index }: { loop: Loop; index: number }) {
     >
       <video
         ref={videoRef}
-        src={loop.src}
         muted
         loop
         playsInline

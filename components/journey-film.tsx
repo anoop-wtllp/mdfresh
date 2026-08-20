@@ -3,7 +3,7 @@
 import { useCallback, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
-import { CLIP_DURATION, JOURNEY } from "@/lib/media";
+import { CLIP_DURATION, JOURNEY, pickSource } from "@/lib/media";
 
 /** Seconds of drift tolerated before we issue a new seek. */
 const SEEK_EPSILON = 0.035;
@@ -44,12 +44,18 @@ export function JourneyFilm() {
         "(prefers-reduced-motion: reduce)",
       ).matches;
 
-      /** Start buffering a clip, once. */
+      /**
+       * Attach the right encode for this device and start buffering it, once.
+       * `src` is deliberately absent from the markup so a phone never begins
+       * downloading the 1280px file before this runs.
+       */
       const prime = (i: number) => {
         if (i < 0 || i >= JOURNEY.length || primed.current.has(i)) return;
         const v = videoRefs.current[i];
         if (!v) return;
         primed.current.add(i);
+        if (!v.poster) v.poster = JOURNEY[i].media.poster;
+        v.src = pickSource(JOURNEY[i].media);
         v.preload = "auto";
         v.load();
       };
@@ -95,8 +101,21 @@ export function JourneyFilm() {
         showWhenReady(i);
       };
 
-      prime(0);
-      prime(1);
+      // Hold the footage back until the visitor starts moving toward the film.
+      // Priming on mount put ~1.4MB on the critical path while they were still
+      // reading the hero; the second clip waits until the film actually begins.
+      const nearby = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) return;
+          prime(0);
+          nearby.disconnect();
+        },
+        // The film begins exactly one viewport down, so any positive margin
+        // fires on load. Shrinking the root's bottom edge instead waits for
+        // roughly a fifth of a screen of actual scrolling.
+        { rootMargin: "0px 0px -20% 0px" },
+      );
+      nearby.observe(section);
       show(0);
 
       // iOS will not decode or seek a video that has never been played, and
@@ -138,6 +157,7 @@ export function JourneyFilm() {
         setStarted(true);
 
         return () => {
+          nearby.disconnect();
           window.removeEventListener("pointerdown", unlock);
           window.removeEventListener("touchstart", unlock);
         };
@@ -173,7 +193,12 @@ export function JourneyFilm() {
         end: "bottom bottom",
         onUpdate: (self) => {
           targetTime.current = self.progress * TOTAL_TIME;
-          if (self.progress > 0.01) setStarted(true);
+          if (self.progress > 0) {
+            // The film is on screen now, so the next clip is worth fetching.
+            prime(0);
+            prime(1);
+            setStarted(true);
+          }
         },
       });
       triggerRef.current = st;
@@ -221,6 +246,7 @@ export function JourneyFilm() {
       });
 
       return () => {
+        nearby.disconnect();
         gsap.ticker.remove(tick);
         media.revert();
         window.removeEventListener("pointerdown", unlock);
@@ -270,10 +296,10 @@ export function JourneyFilm() {
             ref={(el) => {
               videoRefs.current[i] = el;
             }}
-            src={c.src}
+            poster={i === 0 ? c.media.poster : undefined}
             muted
             playsInline
-            preload={i < 2 ? "auto" : "none"}
+            preload="none"
             disablePictureInPicture
             aria-hidden="true"
             tabIndex={-1}

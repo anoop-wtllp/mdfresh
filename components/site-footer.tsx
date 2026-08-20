@@ -75,9 +75,10 @@ export function SiteFooter() {
           <Image
             src="/assets/logo-gfresh-alpha.png"
             alt="G-Fresh"
-            width={112}
-            height={72}
-            className="h-8 w-auto"
+            width={420}
+            height={270}
+            quality={90}
+            className="h-11 w-auto"
           />
           <p className="text-[0.9375rem] text-frost-mute">
             &copy; {new Date().getFullYear()} G-Fresh. Frozen at the peak of

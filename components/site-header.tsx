@@ -78,10 +78,11 @@ export function SiteHeader() {
           <Image
             src="/assets/logo-gfresh-alpha.png"
             alt=""
-            width={112}
-            height={72}
+            width={420}
+            height={270}
             priority
-            className="h-8 w-auto sm:h-9"
+            quality={90}
+            className="h-9 w-auto sm:h-10"
           />
         </a>
 

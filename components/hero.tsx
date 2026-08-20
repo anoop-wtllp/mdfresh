@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
-import { HERO_CLIP } from "@/lib/media";
+import { HERO_CLIP, pickSource } from "@/lib/media";
 
 export function Hero() {
   const rootRef = useRef<HTMLElement>(null);
@@ -12,6 +12,16 @@ export function Hero() {
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+
+    // Source is chosen here rather than in the markup so a phone never starts
+    // fetching the desktop encode. The poster fills the frame meanwhile, so
+    // the hero paints immediately either way.
+    if (!video.src) {
+      video.src = pickSource(HERO_CLIP.media);
+      video.preload = "auto";
+      video.load();
+      video.play().catch(() => {});
+    }
 
     // `canplay` can fire before React attaches its handler — on a warm cache it
     // reliably does — which would leave the placeholder covering the footage
@@ -107,12 +117,12 @@ export function Hero() {
     >
       <video
         ref={videoRef}
-        src={HERO_CLIP.src}
+        poster={HERO_CLIP.media.poster}
         autoPlay
         muted
         loop
         playsInline
-        preload="auto"
+        preload="none"
         disablePictureInPicture
         aria-hidden="true"
         tabIndex={-1}

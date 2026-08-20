@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
-import { BAND_CLIP } from "@/lib/media";
+import { BAND_CLIP, pickSource } from "@/lib/media";
 import { RevealWords } from "@/components/reveal";
 
 /**
@@ -27,6 +27,8 @@ export function ColdBand() {
         if (entry.isIntersecting) {
           if (!loaded) {
             loaded = true;
+            video.poster = BAND_CLIP.media.poster;
+            video.src = pickSource(BAND_CLIP.media);
             video.preload = "auto";
             video.load();
           }
@@ -75,7 +77,6 @@ export function ColdBand() {
       {/* Oversized so the parallax drift never exposes an edge. */}
       <video
         ref={videoRef}
-        src={BAND_CLIP.src}
         muted
         loop
         playsInline
