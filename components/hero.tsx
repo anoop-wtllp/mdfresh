@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { HERO_CLIP, pickSource } from "@/lib/media";
@@ -113,7 +114,13 @@ export function Hero() {
     <section
       ref={rootRef}
       aria-labelledby="hero-heading"
-      className="relative h-dvh w-full overflow-hidden bg-ink"
+      // `min-h-dvh`, not `h-dvh`: at 1366x768 and below, the copy is taller
+      // than the viewport, and a fixed height made the section clip it against
+      // the top edge — the chips and part of the headline ended up behind the
+      // header. Growing past the fold and letting the page scroll is the
+      // lesser evil; on any viewport tall enough, `justify-end` still parks
+      // the whole block on the bottom edge exactly as before.
+      className="relative flex min-h-dvh w-full flex-col justify-end overflow-hidden bg-ink"
     >
       <video
         ref={videoRef}
@@ -149,27 +156,46 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-0 scrim md:hidden" />
       <div className="pointer-events-none absolute inset-0 hidden scrim-side md:block" />
 
+      {/* The top padding is the floor the copy cannot rise above: the header is
+          66px on a phone and 116px on desktop, and without it a short viewport
+          slides the first line straight under the bar. */}
       <div
         data-hero-content
-        className="relative flex h-full flex-col justify-end pb-[calc(3rem+env(safe-area-inset-bottom))] sm:pb-20"
+        className="relative w-full pt-28 pb-[calc(3rem+env(safe-area-inset-bottom))] sm:pt-36 sm:pb-20"
       >
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
-          <p data-hero-fade className="eyebrow eyebrow-chip mb-5 text-pea-bright will-reveal sm:mb-6">
-            Individually quick frozen
-          </p>
+          <div
+            data-hero-fade
+            className="mb-5 flex flex-wrap items-center gap-2 will-reveal sm:mb-6"
+          >
+            {["Since 2010", "IQF Technology", "Farm-to-Freezer Cold Chain"].map(
+              (chip) => (
+                <p key={chip} className="eyebrow eyebrow-chip text-pea-bright">
+                  {chip}
+                </p>
+              ),
+            )}
+          </div>
 
           <h1
             id="hero-heading"
             className="font-display text-[length:var(--text-hero)] font-semibold leading-[0.92] tracking-[-0.04em]"
           >
-            {/* Each line is a mask; the span inside slides up from behind it. */}
+            {/* Each line is a mask; the span inside slides up from behind it.
+                One word per mask, broken by hand: the reveal staggers per mask,
+                so a mask holding two wrapped lines rises as a single block and
+                loses the stagger. "Preserved Freshness." on one mask did
+                exactly that — it fit on a line at 1280 and wrapped at 1440, so
+                the effect and the line rhythm both changed with the viewport.
+                Single words keep every mask one line tall at any width. */}
             <span data-hero-line className="block overflow-hidden pb-[0.06em]">
-              <span className="block">Frozen at the</span>
+              <span className="block">Perfectly</span>
             </span>
             <span data-hero-line className="block overflow-hidden pb-[0.06em]">
-              <span className="block">
-                peak of <em className="not-italic text-pea">fresh</em>
-              </span>
+              <span className="block">Preserved</span>
+            </span>
+            <span data-hero-line className="block overflow-hidden pb-[0.06em]">
+              <span className="block text-pea">Freshness.</span>
             </span>
           </h1>
 
@@ -178,33 +204,33 @@ export function Hero() {
               data-hero-fade
               className="max-w-md text-[length:var(--text-lead)] leading-relaxed text-frost will-reveal"
             >
-              Four hours from the field to minus eighteen. Nothing added,
-              nothing waiting around — just the crop, stopped exactly where we
-              found it.
+              Premium frozen vegetables &amp; fruits, flash-frozen at the peak
+              of harvest with advanced IQF technology — nutrition, colour and
+              taste, sealed and locked at −18°C.
             </p>
 
             <div
               data-hero-fade
               className="flex w-full flex-col gap-3 will-reveal sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:gap-4"
             >
-              <a
-                href="#journey"
+              <Link
+                href="/products"
                 className="group inline-flex w-full items-center justify-center gap-3 rounded-full bg-frost px-7 py-4 text-sm font-medium text-ink transition-colors duration-300 hover:bg-pea-bright sm:w-auto sm:py-3.5"
               >
-                Watch the journey
+                Explore Products
                 <span
                   aria-hidden="true"
-                  className="transition-transform duration-300 group-hover:translate-y-0.5"
+                  className="transition-transform duration-300 group-hover:translate-x-1"
                 >
-                  &darr;
+                  &rarr;
                 </span>
-              </a>
-              <a
-                href="#range"
+              </Link>
+              <Link
+                href="/contact"
                 className="inline-flex w-full items-center justify-center rounded-full border rule px-7 py-4 text-sm font-medium text-frost transition-colors duration-300 hover:border-frost/40 hover:bg-frost/5 sm:w-auto sm:py-3.5"
               >
-                See the range
-              </a>
+                Get a Quote
+              </Link>
             </div>
           </div>
         </div>

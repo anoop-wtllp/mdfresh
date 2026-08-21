@@ -2,8 +2,8 @@
 
 /* ---------------------------------------------------------------------------
    Design tokens
-   Palette is pulled off the G-Fresh mark: the red of the script, the two
-   greens of the leaf, and the frost white behind it.
+   Palette is pulled off the G-Fresh mark M.D. Fresh Veg trades under: the red
+   of the script, the two greens of the leaf, and the frost white behind it.
 --------------------------------------------------------------------------- */
 @theme {
   --color-ink: #070b09;
@@ -13,6 +13,20 @@
   --color-frost: #eef5f2;
   --color-frost-dim: #b8c7c1;
   --color-frost-mute: #7d8f88;
+
+  /* Light-ground surfaces, for the sections that invert onto paper. `paper`
+     and `paper-soft` are the two alternating card grounds; `mint` is what
+     either of them becomes on hover. */
+  --color-paper: #ffffff;
+  --color-paper-soft: #e5ebe8;
+  --color-mint: #d3ecd9;
+
+  /* frost-dim / frost-mute mirrored, for text on those grounds. Both clear AA
+     against all three, including the mint hover state — which is what sets
+     `ink-mute`: it is the 10px mono numeral, and on mint it is the tightest
+     ratio on the page at 4.9:1. */
+  --color-ink-dim: #3f4d47;
+  --color-ink-mute: #55635d;
 
   --color-leaf: #12833f;
   --color-leaf-deep: #0a4f27;
@@ -54,7 +68,8 @@
 html {
   scroll-behavior: smooth;
   /* Anchor jumps must clear the fixed header. */
-  scroll-padding-top: 6rem;
+  /* Clears the fixed header: 5rem of bar, plus the desktop contact strip. */
+  scroll-padding-top: 7.5rem;
   background-color: var(--color-ink);
   -webkit-tap-highlight-color: transparent;
 }
@@ -110,7 +125,9 @@ p {
       rgb(7 11 9 / 0.16) 68%,
       rgb(7 11 9 / 0.1) 86%
     ),
-    /* Keeps the header readable before it turns solid. */
+    /* The header is white glass now and carries its own contrast, so this is
+       no longer holding text up — it grounds the glass, which needs something
+       behind it to read as glass rather than as a washed-out strip. */
     linear-gradient(to bottom, rgb(7 11 9 / 0.55) 0%, rgb(7 11 9 / 0) 18%);
 }
 
@@ -127,12 +144,29 @@ p {
       rgb(7 11 9 / 0.3) 74%,
       rgb(7 11 9 / 0) 92%
     ),
-    /* Keeps the header readable before it turns solid. */
+    /* As above: grounds the glass bar rather than holding any text up. */
     linear-gradient(to bottom, rgb(7 11 9 / 0.5) 0%, rgb(7 11 9 / 0) 16%);
 }
 
 @utility rule {
   border-color: color-mix(in oklab, var(--color-frost) 12%, transparent);
+}
+
+/* `rule` inverted, for hairlines on a light ground. */
+@utility rule-ink {
+  border-color: color-mix(in oklab, var(--color-ink) 14%, transparent);
+}
+
+/* Marks a section that runs on a light ground, and retints the two things
+   tuned for ink that would otherwise wash out on paper: the eyebrow (pea sits
+   at 2.2:1 there) and the focus ring (pea-bright at 1.4:1 is effectively
+   invisible). Both become leaf-deep, which clears 8:1. */
+.on-light {
+  --eyebrow-ink: var(--color-leaf-deep);
+}
+
+.on-light :focus-visible {
+  outline-color: var(--color-leaf-deep);
 }
 
 /* Over video, a scrim alone cannot guarantee contrast — the frame underneath
@@ -154,7 +188,7 @@ p {
   font-size: 0.6875rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--color-pea);
+  color: var(--eyebrow-ink, var(--color-pea));
 }
 
 /* Elements animated in by JS start hidden. A <noscript> block in the root

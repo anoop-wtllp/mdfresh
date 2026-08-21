@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,16 +23,30 @@ const bricolage = Bricolage_Grotesque({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.mdfreshveg.com"),
   title: {
-    default: "G-Fresh — Frozen at the peak of fresh",
-    template: "%s · G-Fresh",
+    default:
+      "M.D. Fresh Veg — Perfectly Preserved Freshness | Frozen Vegetables & Fruits",
+    template: "%s · M.D. Fresh Veg",
   },
   description:
-    "Individually quick frozen vegetables, four hours from the field to minus eighteen. Follow one pea from the vine to the bowl.",
+    "Premium frozen vegetables & fruits, flash-frozen at the peak of harvest with advanced IQF technology — nutrition, colour and taste, sealed and locked at −18°C. Processing, packaging and cold-storage since 2010 at Ram Nagar, Aligarh.",
+  keywords: [
+    "frozen vegetables",
+    "IQF",
+    "frozen green peas",
+    "frozen sweet corn",
+    "cold chain",
+    "Aligarh",
+    "HORECA supply",
+    "frozen food exporter India",
+  ],
   openGraph: {
-    title: "G-Fresh — Frozen at the peak of fresh",
+    title: "M.D. Fresh Veg — Perfectly Preserved Freshness",
     description:
-      "Individually quick frozen vegetables, four hours from the field to minus eighteen.",
+      "Premium frozen vegetables & fruits, flash-frozen at the peak of harvest with advanced IQF technology.",
+    siteName: "M.D. Fresh Veg",
+    locale: "en_IN",
     type: "website",
   },
 };
@@ -60,7 +76,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Skip to content
         </a>
-        {children}
+        {/* Chrome lives here, not in each page, so a client-side navigation
+            leaves the header mounted: no re-render, no dropped scroll spring,
+            no menu flash between routes. */}
+        <SiteHeader />
+        <main id="main" className="flex-1">
+          {children}
+        </main>
+        <SiteFooter />
       </body>
     </html>
   );

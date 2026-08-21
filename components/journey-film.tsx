@@ -19,7 +19,19 @@ const SNAP_ABOVE = 3;
 const TOTAL_TIME = JOURNEY.length * CLIP_DURATION;
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-export function JourneyFilm() {
+type JourneyFilmProps = {
+  /**
+   * Render the six stages as plain text for anyone who cannot scrub the film.
+   *
+   * Only the active chapter's caption is mounted, so without this the stages
+   * reach whoever scrolls the film and nobody else. The Process page follows
+   * the film with `ProcessSteps`, which says the same thing visibly — there
+   * this would only be announced twice, so that page turns it off.
+   */
+  recap?: boolean;
+};
+
+export function JourneyFilm({ recap = true }: JourneyFilmProps) {
   const rootRef = useRef<HTMLElement>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const triggerRef = useRef<ScrollTrigger | null>(null);
@@ -277,14 +289,16 @@ export function JourneyFilm() {
 
   return (
     <section
-      id="journey"
+      id="process"
       ref={rootRef}
-      aria-labelledby="journey-heading"
+      aria-labelledby="process-heading"
       className="relative"
       style={{ height: runwayHeight }}
     >
-      <h2 id="journey-heading" className="sr-only">
-        From field to freezer: the journey of a G-Fresh pea
+      {/* The section is footage plus a chapter rail; the stages themselves are
+          spelled out in readable text further down the page. */}
+      <h2 id="process-heading" className="sr-only">
+        Process film
       </h2>
 
       {/* The stage. Sticky rather than a GSAP pin: no pin-spacer, no layout
@@ -354,7 +368,7 @@ export function JourneyFilm() {
         {/* The rail sits over the released, bright side of the frame, so it
             carries its own plate rather than relying on the scrim. */}
         <nav
-          aria-label="Film chapters"
+          aria-label="Process steps"
           className="absolute right-5 top-1/2 hidden -translate-y-1/2 rounded-2xl bg-ink/85 px-3 py-2 ring-1 ring-frost/10 backdrop-blur-md lg:block"
         >
           <ol className="flex flex-col gap-1">
@@ -394,7 +408,7 @@ export function JourneyFilm() {
             jump targets — a scroll-driven section must stay navigable on a
             phone, not just on a desktop. */}
         <nav
-          aria-label="Film chapters"
+          aria-label="Process steps"
           className="absolute inset-x-0 bottom-0 px-4 pb-4 lg:hidden"
         >
           <div className="rounded-2xl bg-ink/85 px-3 py-2 ring-1 ring-frost/10 backdrop-blur-md">
@@ -423,7 +437,7 @@ export function JourneyFilm() {
                     className="flex h-11 w-full items-center"
                   >
                     <span className="sr-only">
-                      Chapter {c.index}: {c.label}
+                      Step {c.index}: {c.label}
                     </span>
                     <span
                       aria-hidden="true"
@@ -458,18 +472,18 @@ export function JourneyFilm() {
         </div>
       </div>
 
-      {/* The footage is decorative; this is the content it stands in for. */}
-      <div className="sr-only">
-        <ol>
-          {JOURNEY.map((c) => (
-            <li key={c.id}>
-              <h3>{c.title}</h3>
-              <p>{c.body}</p>
-              <p>{c.alt}</p>
-            </li>
-          ))}
-        </ol>
-      </div>
+      {recap && (
+        <div className="sr-only">
+          <ol>
+            {JOURNEY.map((c) => (
+              <li key={c.id}>
+                <h3>{c.title}</h3>
+                <p>{c.body}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
     </section>
   );
 }

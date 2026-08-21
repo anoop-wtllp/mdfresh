@@ -101,8 +101,8 @@ export function ColdBand() {
           className="mx-auto max-w-4xl font-display text-[length:var(--text-display)] font-semibold leading-[1.03] text-frost"
         />
         <p className="mx-auto mt-6 max-w-xl text-[length:var(--text-lead)] leading-relaxed text-frost">
-          No brine, no preservative, no colouring. The vapour you are looking at
-          is the whole recipe.
+          No brine, no preservative, no colouring. Frozen at −30°C to
+          −40°C in 10–12 minutes, then held at −18°C or below until dispatch.
         </p>
       </div>
 

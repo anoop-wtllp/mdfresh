@@ -57,60 +57,65 @@ export type Chapter = {
   alt: string;
 };
 
-/** The farm-to-frozen film, in narrative order. */
+/**
+ * The farm-to-freezer film: the six manufacturing stages, in plant order.
+ *
+ * The footage is representative, not documentary — the `alt` on each step
+ * describes the clip that actually plays, while `title`/`body` carry the stage.
+ */
 export const JOURNEY: Chapter[] = [
   {
-    id: "field",
+    id: "sourcing",
     index: "01",
     media: sources("aerial-camera-descending-over-peas"),
-    label: "The field",
-    title: "It starts in the ground, not a warehouse.",
-    body: "We contract-grow with farms inside a four-hour radius of the freezer. The harvest window is measured in hours, and we plan the whole season backwards from it.",
+    label: "Sourcing",
+    title: "Raw material sourcing.",
+    body: "Farm-fresh produce from partner farmers in the agri-belt around Ram Nagar. Backward linkages keep the raw material consistent and traceable to the field it came from.",
     alt: "Aerial camera descending toward a green pea field at first light.",
   },
   {
-    id: "pod",
+    id: "sorting",
     index: "02",
-    media: sources("green-pea-pod-swaying"),
-    label: "The pod",
-    title: "Picked at the peak, never before it.",
-    body: "Sugar turns to starch the moment a pea leaves the vine. We test brix in the field and only call the harvest when the crop is exactly where we want it.",
-    alt: "A single green pea pod swaying on the vine in soft wind.",
-  },
-  {
-    id: "shell",
-    index: "03",
     media: sources("green-pea-pod-opening"),
-    label: "The shell",
-    title: "Opened, sorted, graded by size.",
-    body: "Pods are shelled within the hour and optically graded. Anything bruised, pale or oversized leaves the line before it ever sees water.",
+    label: "Sorting",
+    title: "Sorting & grading.",
+    body: "Careful sorting and grading for consistent quality. Anything bruised, pale or off-size leaves the line before it ever reaches the wash.",
     alt: "A pea pod splitting open to reveal the row of peas inside.",
   },
   {
-    id: "wash",
-    index: "04",
+    id: "washing",
+    index: "03",
     media: sources("green-peas-tumbling-in-water"),
-    label: "The wash",
-    title: "Washed cold, blanched fast.",
-    body: "A cold-water tumble lifts the field heat, then seconds of steam lock the colour and stop the enzymes that would otherwise dull the flavour.",
+    label: "Washing",
+    title: "Washing, peeling & cutting.",
+    body: "Multi-stage cleaning, peeling and precise cutting, so every piece in the pack is the same size and cooks at the same rate.",
     alt: "Green peas tumbling through clean running water.",
   },
   {
-    id: "freeze",
+    id: "blanching",
+    index: "04",
+    media: sources("green-pea-pod-swaying"),
+    label: "Blanching",
+    title: "Blanching in hot water.",
+    body: "Precise blanching to lock in colour and nutrition. Seconds of heat stop the enzymes that would otherwise dull the flavour in storage.",
+    alt: "A single green pea pod swaying on the vine in soft wind.",
+  },
+  {
+    id: "freezing",
     index: "05",
     media: sources("frost-crystals-blooming-on-peas"),
-    label: "The freeze",
-    title: "Minus eighteen, one pea at a time.",
-    body: "Individually quick frozen in a blast tunnel. Small crystals, no clumping, no cell damage — which is why they pour loose and cook like fresh.",
+    label: "IQF freezing",
+    title: "Individual Quick Freezing.",
+    body: "Frozen at −30°C to −40°C in 10–12 minutes, piece by piece. Small crystals, no clumping, no cell damage — which is why they pour loose and cook like fresh.",
     alt: "Frost crystals blooming across the surface of green peas.",
   },
   {
-    id: "bowl",
+    id: "storage",
     index: "06",
     media: sources("frozen-peas-pouring-into-bowl"),
-    label: "The bowl",
-    title: "Nine months later, still that morning.",
-    body: "Sealed, cased and held at a stable minus eighteen all the way to your kitchen. Open a bag in February and you are eating the summer we picked.",
+    label: "Storage",
+    title: "Frozen storage at −18°C.",
+    body: "Cold-chain storage at −18°C or below until dispatch, then held there all the way to your kitchen. Open a pack in February and you are cooking the season we picked.",
     alt: "Frozen peas pouring loose into a bowl.",
   },
 ];
@@ -170,16 +175,20 @@ export const LOOPS: Loop[] = [
   },
 ];
 
+/**
+ * Look up a loop by id — used by the inner-page banners to pick a backdrop.
+ *
+ * Throws rather than returning undefined: a typo here would otherwise surface
+ * as a banner with no footage and no error, at build time on every page.
+ */
+export function loop(id: string): Loop {
+  const found = LOOPS.find((l) => l.id === id);
+  if (!found) throw new Error(`Unknown loop id: ${id}`);
+  return found;
+}
+
 /** The clip behind the hero. */
 export const HERO_CLIP = LOOPS.find((l) => l.id === "floating")!;
 
 /** The clip behind the full-bleed band between sections. */
 export const BAND_CLIP = LOOPS.find((l) => l.id === "fog")!;
-
-/**
- * Gallery tiles: whatever is not already carrying a section of its own. Every
- * clip in the folder gets exactly one home, so nothing repeats on the page.
- */
-export const GALLERY = LOOPS.filter(
-  (l) => l.id !== HERO_CLIP.id && l.id !== BAND_CLIP.id,
-);
