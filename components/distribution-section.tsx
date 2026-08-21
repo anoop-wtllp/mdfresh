@@ -11,7 +11,7 @@ export function DistributionSection() {
     <section
       id="distribution"
       aria-labelledby="distribution-heading"
-      className="border-t rule py-24 sm:py-32"
+      className="on-light border-t rule-ink bg-frost py-24 sm:py-32"
     >
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-14">
@@ -23,10 +23,10 @@ export function DistributionSection() {
               as="h2"
               id="distribution-heading"
               text="A cold chain you can rely on."
-              className="font-display text-[length:var(--text-title)] font-semibold leading-[1.05] text-frost"
+              className="font-display text-[length:var(--text-title)] font-semibold leading-[1.05] text-ink"
             />
             <Reveal delay={0.15}>
-              <p className="mt-6 max-w-lg text-[length:var(--text-lead)] leading-relaxed text-frost-dim">
+              <p className="mt-6 max-w-lg text-[length:var(--text-lead)] leading-relaxed text-ink-dim">
                 With a robust cold-chain network and a customer-first approach,
                 we ensure timely distribution of premium frozen produce — from
                 farm to freezer to your kitchen, preserving freshness at every
@@ -34,14 +34,14 @@ export function DistributionSection() {
               </p>
             </Reveal>
 
-            <ul className="mt-9 border-t rule">
+            <ul className="mt-9 border-t rule-ink">
               {DISTRIBUTION.map((point, i) => (
                 <Reveal key={point} delay={0.2 + i * 0.06} as="li">
-                  <span className="flex gap-5 border-b rule py-4">
-                    <span className="shrink-0 font-mono text-[10px] tracking-[0.2em] text-frost-mute">
+                  <span className="flex gap-5 border-b rule-ink py-4">
+                    <span className="shrink-0 font-mono text-[10px] tracking-[0.2em] text-ink-mute">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <span className="text-[0.9375rem] leading-relaxed text-frost-dim">
+                    <span className="text-[0.9375rem] leading-relaxed text-ink-dim">
                       {point}
                     </span>
                   </span>
@@ -51,7 +51,7 @@ export function DistributionSection() {
           </div>
 
           <Reveal delay={0.2} className="lg:col-span-6">
-            <figure className="overflow-hidden rounded-2xl border rule">
+            <figure className="overflow-hidden rounded-2xl border rule-ink">
               <Image
                 src="/markets/trays.jpg"
                 alt="Clear retail trays of frozen peas, carrot slices and sweetcorn arranged on a bright orange surface."

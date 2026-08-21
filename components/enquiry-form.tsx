@@ -3,11 +3,15 @@
 import { useId, useState, type FormEvent } from "react";
 import { CONTACT, MARKETS, PRODUCTS } from "@/lib/content";
 
+// White fields on the section's frost ground, so each input reads as its own
+// well. `focus:outline-none` is deliberately gone: it used to suppress the
+// global focus ring and leave a border-colour change as the only cue, which is
+// the weakest indicator available. The ring now shows alongside it.
 const FIELD =
-  "w-full rounded-xl border rule bg-ink px-4 py-3.5 text-[0.9375rem] text-frost placeholder:text-frost-mute transition-colors duration-300 hover:border-frost/25 focus:border-pea focus:outline-none";
+  "w-full rounded-xl border rule-field bg-paper px-4 py-3.5 text-[0.9375rem] text-ink placeholder:text-ink-mute transition-colors duration-300 hover:border-ink/70 focus:border-leaf-deep";
 
 const LABEL =
-  "mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-frost-mute";
+  "mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-ink-mute";
 
 /**
  * Enquiry form.
@@ -150,7 +154,7 @@ export function EnquiryForm() {
       <div className="sm:col-span-2">
         <button
           type="submit"
-          className="group inline-flex w-full items-center justify-center gap-3 rounded-full bg-pea px-7 py-4 text-sm font-medium text-ink transition-colors duration-300 hover:bg-pea-bright sm:w-auto"
+          className="group inline-flex w-full items-center justify-center gap-3 rounded-full bg-leaf-deep px-7 py-4 text-sm font-medium text-paper transition-colors duration-300 hover:bg-leaf sm:w-auto"
         >
           Send enquiry
           <span
@@ -165,7 +169,7 @@ export function EnquiryForm() {
             and the visitor may never see this area change. */}
         <p
           role="status"
-          className="mt-4 text-[0.8125rem] leading-relaxed text-frost-mute"
+          className="mt-4 text-[0.8125rem] leading-relaxed text-ink-mute"
         >
           {handedOff
             ? `Your email app should now be open with the details filled in. If nothing happened, write to ${CONTACT.email} directly.`

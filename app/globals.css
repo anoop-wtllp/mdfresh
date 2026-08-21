@@ -157,6 +157,14 @@ p {
   border-color: color-mix(in oklab, var(--color-ink) 14%, transparent);
 }
 
+/* Form-field boundary — deliberately heavier than `rule-ink`.
+   A divider is decoration, but an input's edge is what identifies the control,
+   so WCAG 1.4.11 wants 3:1 against both the field fill and the page behind it.
+   At 14% it measured 1.36:1 against both; 52% clears 3:1 on either ground. */
+@utility rule-field {
+  border-color: color-mix(in oklab, var(--color-ink) 52%, transparent);
+}
+
 /* Marks a section that runs on a light ground, and retints the two things
    tuned for ink that would otherwise wash out on paper: the eyebrow (pea sits
    at 2.2:1 there) and the focus ring (pea-bright at 1.4:1 is effectively

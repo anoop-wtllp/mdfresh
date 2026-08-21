@@ -25,7 +25,7 @@ export default function MarketsPage() {
       />
       <MarketsSection />
       <DistributionSection />
-      <EnquiryCta />
+      <EnquiryCta tone="light" />
     </>
   );
 }
