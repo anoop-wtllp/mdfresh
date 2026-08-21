@@ -1,10 +1,9 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { PRODUCTS } from "@/lib/content";
+import { ProductCard } from "@/components/product-card";
 import { Reveal } from "@/components/reveal";
 
 /** A band of product names that slides as the page scrolls past it. */
@@ -80,53 +79,12 @@ export function RangeSection() {
                 key={product.name}
                 delay={(i % 4) * 0.06}
                 as="li"
-                className="group relative flex flex-col overflow-hidden rounded-2xl border rule-ink bg-paper transition-colors duration-500 hover:border-leaf/50"
+                className="group"
               >
-                {/* Square and full-bleed, not the circular plate this card used
-                    to carry. The mask existed to crop white corners off a dark
-                    card; on a white one the corners already match, so the crop
-                    would only remove product for nothing. */}
-                <div className="aspect-square w-full overflow-hidden">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    width={261}
-                    height={261}
-                    quality={90}
-                    sizes="(min-width: 1280px) 288px, (min-width: 1024px) 30vw, (min-width: 640px) 45vw, 90vw"
-                    className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05] motion-reduce:transition-none"
-                  />
-                </div>
-
-                <div className="flex flex-1 flex-col border-t rule-ink p-5">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-leaf-deep">
-                    {product.tag}
-                  </p>
-                  <h3 className="mt-2 font-display text-lg font-semibold text-ink transition-colors duration-500 group-hover:text-leaf-deep motion-reduce:transition-none">
-                    {product.name}
-                  </h3>
-                  {/* Takes the slack so every card's Enquire sits on one line. */}
-                  <p className="mt-2 flex-1 text-[0.875rem] leading-relaxed text-ink-dim">
-                    {product.detail}
-                  </p>
-
-                  {/* Stretched link: the `after` box covers the tile, so the
-                      whole card is clickable while the accessible name stays
-                      "Enquire about <product>". */}
-                  <Link
-                    href="/contact"
-                    aria-label={`Enquire about ${product.name}`}
-                    className="mt-4 inline-flex items-center gap-2 text-sm text-ink-mute transition-colors duration-300 after:absolute after:inset-0 group-hover:text-leaf-deep"
-                  >
-                    Enquire
-                    <span
-                      aria-hidden="true"
-                      className="transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none"
-                    >
-                      &rarr;
-                    </span>
-                  </Link>
-                </div>
+                <ProductCard
+                  product={product}
+                  index={i}
+                />
               </Reveal>
             ))}
           </ul>

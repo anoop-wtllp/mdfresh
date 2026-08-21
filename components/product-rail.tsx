@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { PRODUCTS } from "@/lib/content";
+import { ProductCard } from "@/components/product-card";
 import { Reveal, RevealWords } from "@/components/reveal";
 
 /**
@@ -25,6 +25,7 @@ export function ProductRail() {
   const trackRef = useRef<HTMLUListElement>(null);
   const progressRef = useRef<HTMLSpanElement>(null);
   const triggerRef = useRef<ScrollTrigger | null>(null);
+  const reducedRef = useRef(false);
 
   useGSAP(
     () => {
@@ -87,6 +88,100 @@ export function ProductRail() {
     },
     { scope: rootRef },
   );
+
+  /**
+   * Depth across the rail: each card turns away from the stage centre and
+   * recedes toward the edges, so the row reads as a curve rather than a flat
+   * strip. Driven from rAF rather than the ScrollTrigger, because it has to
+   * work in both modes — the desktop track is GSAP-translated while the mobile
+   * one is natively scrolled, and `getBoundingClientRect` reflects either.
+   */
+  useEffect(() => {
+    const stage = stageRef.current;
+    const track = trackRef.current;
+    if (!stage || !track) return;
+
+    reducedRef.current = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (reducedRef.current) return;
+
+    const cards = Array.from(
+      track.querySelectorAll<HTMLElement>("[data-depth]"),
+    );
+    let raf = 0;
+
+    const frame = () => {
+      const s = stage.getBoundingClientRect();
+      const mid = s.left + s.width / 2;
+      const half = s.width / 2 || 1;
+
+      // Every read first, then every write. Interleaving them would force a
+      // layout per card, ten times a frame.
+      const offsets = cards.map((c) => {
+        const r = c.getBoundingClientRect();
+        return (r.left + r.width / 2 - mid) / half;
+      });
+
+      cards.forEach((card, i) => {
+        const t = Math.max(-1.25, Math.min(1.25, offsets[i]));
+        const away = Math.abs(t);
+        card.style.transform =
+          `perspective(1200px) rotateY(${(-t * 15).toFixed(2)}deg)` +
+          ` translateZ(${(-away * 80).toFixed(1)}px)` +
+          ` scale(${(1 - away * 0.05).toFixed(3)})`;
+        card.style.opacity = (1 - away * 0.25).toFixed(3);
+      });
+
+      raf = requestAnimationFrame(frame);
+    };
+
+    // Only while the rail is on screen — this would otherwise run a frame loop
+    // for the whole page.
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        cancelAnimationFrame(raf);
+        if (entry.isIntersecting) raf = requestAnimationFrame(frame);
+        else
+          cards.forEach((c) => {
+            c.style.transform = "";
+            c.style.opacity = "";
+          });
+      },
+      { threshold: 0.01 },
+    );
+    io.observe(stage);
+
+    return () => {
+      io.disconnect();
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  /** Tilt the card under the pointer. Nested inside the depth wrapper so the
+   *  two transforms compose instead of overwriting each other. */
+  const tilt = useCallback((e: React.PointerEvent<HTMLLIElement>) => {
+    if (reducedRef.current || e.pointerType === "touch") return;
+    const card = e.currentTarget.querySelector<HTMLElement>("[data-tilt]");
+    if (!card) return;
+    const r = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    // No transition while tracking, or the card lags a frame behind the cursor.
+    card.style.transition = "box-shadow 300ms, border-color 300ms";
+    card.style.transform =
+      `perspective(900px) rotateY(${(x * 12).toFixed(2)}deg)` +
+      ` rotateX(${(-y * 12).toFixed(2)}deg) translateY(-6px)`;
+  }, []);
+
+  /** Spring back on the way out — this one does want an ease. */
+  const untilt = useCallback((e: React.PointerEvent<HTMLLIElement>) => {
+    const card = e.currentTarget.querySelector<HTMLElement>("[data-tilt]");
+    if (!card) return;
+    card.style.transition =
+      "transform 600ms cubic-bezier(0.22,1,0.36,1), box-shadow 300ms, border-color 300ms";
+    card.style.transform = "";
+  }, []);
 
   /**
    * Bring a card into the stage when something inside it takes focus.
@@ -172,53 +267,15 @@ export function ProductRail() {
               <li
                 key={product.name}
                 onFocusCapture={() => revealOnFocus(i)}
-                className="group relative flex w-[78vw] max-w-[18rem] shrink-0 snap-start flex-col overflow-hidden rounded-2xl border rule-ink bg-paper transition-colors duration-500 hover:border-leaf/50 sm:w-[18rem]"
+                onPointerMove={tilt}
+                onPointerLeave={untilt}
+                className="group w-[78vw] max-w-[18rem] shrink-0 snap-start sm:w-[18rem]"
               >
-                {/* The shots are cut-outs on white, so on a white card they
-                    need no mask — the ground already matches. A square box
-                    from a square source means the crop is a no-op and the
-                    image only ever scales with the card. */}
-                <div className="aspect-square w-full overflow-hidden">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    width={261}
-                    height={261}
-                    quality={90}
-                    sizes="(min-width: 640px) 288px, 78vw"
-                    className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05] motion-reduce:transition-none"
+                <div data-depth className="h-full will-change-transform">
+                  <ProductCard
+                    product={product}
+                    index={i}
                   />
-                </div>
-
-                <div className="flex flex-1 flex-col border-t rule-ink p-5">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-leaf-deep">
-                    {product.tag}
-                  </p>
-                  <h3 className="mt-2 font-display text-lg font-semibold text-ink transition-colors duration-500 group-hover:text-leaf-deep motion-reduce:transition-none">
-                    {product.name}
-                  </h3>
-                  {/* Takes the slack so Enquire lands on the same line in
-                      every card, whatever the description runs to. */}
-                  <p className="mt-2 flex-1 text-[0.875rem] leading-relaxed text-ink-dim">
-                    {product.detail}
-                  </p>
-
-                  {/* Stretched link: the `after` box covers the card, so the
-                      whole tile is clickable while the accessible name stays
-                      "Enquire about <product>". */}
-                  <Link
-                    href="/contact"
-                    aria-label={`Enquire about ${product.name}`}
-                    className="mt-4 inline-flex items-center gap-2 text-sm text-ink-mute transition-colors duration-300 after:absolute after:inset-0 group-hover:text-leaf-deep"
-                  >
-                    Enquire
-                    <span
-                      aria-hidden="true"
-                      className="transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none"
-                    >
-                      &rarr;
-                    </span>
-                  </Link>
                 </div>
               </li>
             ))}
