@@ -1,5 +1,5 @@
 import { MARKETS } from "@/lib/content";
-import { Reveal } from "@/components/reveal";
+import { Reveal, RevealWords } from "@/components/reveal";
 
 /**
  * The four segments we supply. Numbered rows rather than cards: the copy
@@ -11,14 +11,23 @@ export function MarketsSection() {
     <section
       id="markets"
       aria-labelledby="markets-heading"
-      className="border-t rule bg-ink-soft py-20 sm:py-28"
+      className="border-t rule bg-ink-soft py-24 sm:py-32"
     >
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
-        {/* Silent, for the same reason as the product list: the banner above
-            already carries this headline. */}
-        <h2 id="markets-heading" className="sr-only">
-          Markets we serve
-        </h2>
+        {/* Visible again: the banner above says "From our freezer to every
+            industry", so this heading is a second, different statement rather
+            than an echo of it. */}
+        <div className="mb-14 max-w-2xl">
+          <Reveal>
+            <p className="eyebrow mb-5">Who we supply</p>
+          </Reveal>
+          <RevealWords
+            as="h2"
+            id="markets-heading"
+            text="Built for HORECA, industry, retail & exports."
+            className="font-display text-[length:var(--text-title)] font-semibold leading-[1.05] text-frost"
+          />
+        </div>
 
         <ul className="border-t rule">
           {MARKETS.map((market, i) => (

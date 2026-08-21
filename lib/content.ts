@@ -245,3 +245,10 @@ export const PLANT = {
     "Advanced IQF line with integrated cold storage.",
   ],
 } as const;
+
+/** How the produce actually reaches a buyer. */
+export const DISTRIBUTION = [
+  "Well-connected via state highways to major business centres.",
+  "Batch-level traceability and scalable supply for large buyers.",
+  "Export-grade packaging for overseas and institutional markets.",
+];

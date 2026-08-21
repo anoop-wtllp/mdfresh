@@ -157,11 +157,11 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-0 hidden scrim-side md:block" />
 
       {/* The top padding is the floor the copy cannot rise above: the header is
-          66px on a phone and 116px on desktop, and without it a short viewport
+          82px on a phone (no contact strip there) and 131px on desktop, and without it a short viewport
           slides the first line straight under the bar. */}
       <div
         data-hero-content
-        className="relative w-full pt-28 pb-[calc(3rem+env(safe-area-inset-bottom))] sm:pt-36 sm:pb-20"
+        className="relative w-full pt-28 pb-[calc(3rem+env(safe-area-inset-bottom))] sm:pt-40 sm:pb-20"
       >
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
           <div

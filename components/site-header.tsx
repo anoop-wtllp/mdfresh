@@ -84,25 +84,30 @@ export function SiteHeader() {
     >
       {/* Contact strip. Desktop only — on a phone the same two lines sit one
           tap away inside the sheet, and the height is better spent elsewhere. */}
-      <div className="hidden border-b rule-ink lg:block">
+      {/* Brand green, and opaque, so it reads as its own bar rather than a
+          tinted slice of the glass below it. No bottom rule: the colour change
+          is the divider. */}
+      <div className="on-deep hidden bg-leaf-deep lg:block">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-end gap-6 px-6 py-2 sm:px-10">
           <a
             href={CONTACT.phoneHref}
-            className="font-mono text-[11px] tracking-wider text-ink-dim transition-colors duration-300 hover:text-leaf-deep"
+            className="font-mono text-[11px] tracking-wider text-frost-dim transition-colors duration-300 hover:text-pea-bright"
           >
             {CONTACT.phoneLabel}
           </a>
-          <span aria-hidden="true" className="h-3 w-px bg-ink/15" />
+          <span aria-hidden="true" className="h-3 w-px bg-frost/25" />
           <a
             href={CONTACT.emailHref}
-            className="font-mono text-[11px] tracking-wider text-ink-dim transition-colors duration-300 hover:text-leaf-deep"
+            className="font-mono text-[11px] tracking-wider text-frost-dim transition-colors duration-300 hover:text-pea-bright"
           >
             {CONTACT.email}
           </a>
         </div>
       </div>
 
-      <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-6 sm:h-20 sm:px-10">
+      {/* The bar grew with the mark: a 64px logo needs more than an 80px bar
+          to sit in without crowding it. */}
+      <div className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-6 sm:h-24 sm:px-10">
         <Link
           href="/"
           onClick={close}
@@ -116,7 +121,10 @@ export function SiteHeader() {
             height={270}
             priority
             quality={90}
-            className="h-9 w-auto sm:h-10"
+            // 80px bar on a phone, 96px from `sm` — about 12px and 16px of
+            // clearance either side.
+            sizes="112px"
+            className="h-14 w-auto sm:h-16"
           />
           <span className="hidden flex-col leading-tight sm:flex">
             <span className="font-display text-sm font-semibold tracking-tight text-ink">
@@ -212,7 +220,7 @@ export function SiteHeader() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.28, ease: EASE }}
-            className="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t rule-ink bg-paper/95 backdrop-blur-xl lg:hidden"
+            className="max-h-[calc(100dvh-5rem)] overflow-y-auto border-t rule-ink bg-paper/95 backdrop-blur-xl lg:hidden"
           >
             <nav aria-label="Primary" className="px-6 py-3">
               <ul className="flex flex-col">

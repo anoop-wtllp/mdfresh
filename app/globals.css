@@ -68,8 +68,8 @@
 html {
   scroll-behavior: smooth;
   /* Anchor jumps must clear the fixed header. */
-  /* Clears the fixed header: 5rem of bar, plus the desktop contact strip. */
-  scroll-padding-top: 7.5rem;
+  /* Clears the fixed header: 6rem of bar, plus the desktop contact strip. */
+  scroll-padding-top: 8.75rem;
   background-color: var(--color-ink);
   -webkit-tap-highlight-color: transparent;
 }
@@ -167,6 +167,14 @@ p {
 
 .on-light :focus-visible {
   outline-color: var(--color-leaf-deep);
+}
+
+/* A deep-green island inside an otherwise light section — the header's contact
+   strip. The leaf-deep ring `.on-light` just set would land on its own colour
+   and disappear, so it goes back to pea-bright here. Specificity beats the
+   rule above rather than relying on source order. */
+.on-light .on-deep :focus-visible {
+  outline-color: var(--color-pea-bright);
 }
 
 /* Over video, a scrim alone cannot guarantee contrast — the frame underneath
