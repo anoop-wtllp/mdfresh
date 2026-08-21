@@ -107,7 +107,6 @@ function Counter({ stat }: { stat: Stat }) {
 export function AboutSection() {
   return (
     <section
-      id="about"
       aria-labelledby="about-heading"
       // `on-light` retints the eyebrow and the focus ring, both tuned for
       // ink and washed out on this ground.

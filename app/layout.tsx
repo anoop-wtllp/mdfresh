@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { COMPANY, CONTACT, SITE_URL } from "@/lib/content";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,7 +24,7 @@ const bricolage = Bricolage_Grotesque({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.mdfreshveg.com"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default:
       "M.D. Fresh Veg — Perfectly Preserved Freshness | Frozen Vegetables & Fruits",
@@ -48,6 +49,39 @@ export const metadata: Metadata = {
     siteName: "M.D. Fresh Veg",
     locale: "en_IN",
     type: "website",
+  },
+};
+
+/**
+ * Organization data for search engines, built only from facts already printed
+ * on the site — name, founding year, plant address, phone and email. Nothing
+ * here is asserted that a visitor cannot also read on the page.
+ */
+const ORGANIZATION_LD = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: COMPANY.legalName,
+  alternateName: COMPANY.name,
+  url: SITE_URL,
+  logo: `${SITE_URL}/assets/logo-gfresh.png`,
+  foundingDate: String(COMPANY.established),
+  description:
+    "Processing, packaging and cold-storage of frozen vegetables and fruits using Individual Quick Freezing (IQF) technology.",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Plot No. 75, Village Ram Nagar, Tehsil Iglas",
+    addressLocality: "Aligarh",
+    addressRegion: "Uttar Pradesh",
+    postalCode: "202002",
+    addressCountry: "IN",
+  },
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: "+91-98377-66000",
+    email: CONTACT.email,
+    contactType: "sales",
+    areaServed: "IN",
+    availableLanguage: ["en", "hi"],
   },
 };
 
@@ -79,6 +113,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* Chrome lives here, not in each page, so a client-side navigation
             leaves the header mounted: no re-render, no dropped scroll spring,
             no menu flash between routes. */}
+        <script
+          type="application/ld+json"
+          // Serialised once from a literal above; there is no user input in it.
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ORGANIZATION_LD) }}
+        />
         <SiteHeader />
         <main id="main" className="flex-1">
           {children}

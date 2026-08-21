@@ -57,7 +57,6 @@ export function StrengthsSection({ tone = "dark" }: StrengthsSectionProps) {
 
   return (
     <section
-      id="strengths"
       aria-labelledby="strengths-heading"
       className={`${t.section} py-28 sm:py-40`}
     >

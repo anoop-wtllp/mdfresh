@@ -107,7 +107,9 @@ export function PageHeader({
             <li>
               <Link
                 href="/"
-                className="transition-colors duration-300 hover:text-pea-bright"
+                // Padding, then pulled back out: the hit area clears the 24px
+                // minimum without the breadcrumb row growing around it.
+                className="-my-2 inline-flex items-center py-2 transition-colors duration-300 hover:text-pea-bright"
               >
                 Home
               </Link>

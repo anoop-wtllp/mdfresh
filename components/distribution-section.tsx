@@ -9,7 +9,6 @@ import { Reveal, RevealWords } from "@/components/reveal";
 export function DistributionSection() {
   return (
     <section
-      id="distribution"
       aria-labelledby="distribution-heading"
       className="on-light border-t rule-ink bg-frost py-24 sm:py-32"
     >

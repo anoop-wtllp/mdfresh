@@ -91,14 +91,14 @@ export function SiteHeader() {
         <div className="mx-auto flex w-full max-w-7xl items-center justify-end gap-6 px-6 py-2 sm:px-10">
           <a
             href={CONTACT.phoneHref}
-            className="font-mono text-[11px] tracking-wider text-frost-dim transition-colors duration-300 hover:text-pea-bright"
+            className="-my-1.5 inline-flex items-center py-1.5 font-mono text-[11px] tracking-wider text-frost-dim transition-colors duration-300 hover:text-pea-bright"
           >
             {CONTACT.phoneLabel}
           </a>
           <span aria-hidden="true" className="h-3 w-px bg-frost/25" />
           <a
             href={CONTACT.emailHref}
-            className="font-mono text-[11px] tracking-wider text-frost-dim transition-colors duration-300 hover:text-pea-bright"
+            className="-my-1.5 inline-flex items-center py-1.5 font-mono text-[11px] tracking-wider text-frost-dim transition-colors duration-300 hover:text-pea-bright"
           >
             {CONTACT.email}
           </a>

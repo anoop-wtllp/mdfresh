@@ -5,6 +5,9 @@
  * means touching an animated component. Footage stays in `lib/media.ts`.
  */
 
+/** Canonical origin. Also feeds `metadataBase`, the sitemap and robots. */
+export const SITE_URL = "https://www.mdfreshveg.com";
+
 export const COMPANY = {
   name: "M.D. Fresh Veg",
   legalName: "M.D. Fresh Veg Private Limited",

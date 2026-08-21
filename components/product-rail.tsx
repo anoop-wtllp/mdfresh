@@ -123,7 +123,6 @@ export function ProductRail() {
   return (
     <section
       ref={rootRef}
-      id="range"
       aria-labelledby="rail-heading"
       className="on-light bg-frost"
     >

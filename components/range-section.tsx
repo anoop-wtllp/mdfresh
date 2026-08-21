@@ -63,7 +63,6 @@ export function RangeSection() {
       <ScrollMarquee />
 
       <section
-        id="products"
         aria-labelledby="products-heading"
         className="on-light bg-frost pt-20 pb-28 sm:pt-24 sm:pb-40"
       >

@@ -2,6 +2,7 @@ import type { Pillar } from "@/lib/content";
 import { Reveal, RevealWords } from "@/components/reveal";
 
 type PillarsSectionProps = {
+  /** Only used to derive the heading id that `aria-labelledby` points at. */
   id: string;
   eyebrow: string;
   heading: string;
@@ -32,7 +33,6 @@ export function PillarsSection({
 
   return (
     <section
-      id={id}
       aria-labelledby={headingId}
       // `on-light` is not decoration: it retints the eyebrow off pea, which
       // sits at 2.2:1 here, and swaps the focus ring for one that is visible.

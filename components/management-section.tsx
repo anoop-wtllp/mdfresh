@@ -12,7 +12,6 @@ import { Reveal, RevealWords } from "@/components/reveal";
 export function ManagementSection() {
   return (
     <section
-      id="management"
       aria-labelledby="management-heading"
       className="on-light border-t rule-ink bg-frost py-24 sm:py-32"
     >

@@ -289,7 +289,6 @@ export function JourneyFilm({ recap = true }: JourneyFilmProps) {
 
   return (
     <section
-      id="process"
       ref={rootRef}
       aria-labelledby="process-heading"
       className="relative"

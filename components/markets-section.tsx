@@ -9,7 +9,6 @@ import { Reveal, RevealWords } from "@/components/reveal";
 export function MarketsSection() {
   return (
     <section
-      id="markets"
       aria-labelledby="markets-heading"
       // `on-light` retints the eyebrow and focus ring, both tuned for ink.
       className="on-light border-t rule-ink bg-paper py-24 sm:py-32"

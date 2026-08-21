@@ -8,7 +8,6 @@ const COLUMNS = [
     links: [
       { label: "About Us", href: "/about" },
       { label: "Our Process", href: "/process" },
-      { label: "Core Strengths", href: "/about#strengths" },
       { label: "Markets", href: "/markets" },
       { label: "Contact", href: "/contact" },
     ],
@@ -44,7 +43,8 @@ export function SiteFooter() {
                 width={420}
                 height={270}
                 quality={90}
-                className="h-12 w-auto"
+                sizes="112px"
+                className="h-14 w-auto"
               />
             </Link>
             <p className="mt-6 font-display text-lg font-semibold text-frost">
@@ -119,9 +119,10 @@ export function SiteFooter() {
               href="https://www.webcitytechnologies.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-frost-dim transition-colors duration-300 hover:text-pea-bright"
+              className="-my-1.5 inline-block py-1.5 text-frost-dim transition-colors duration-300 hover:text-pea-bright"
             >
               Webcity Technologies LLP
+              <span className="sr-only"> (opens in a new tab)</span>
             </a>
           </p>
         </div>
