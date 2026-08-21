@@ -174,3 +174,74 @@ export const MARKETS: Market[] = [
     body: "Export-ready produce meeting international quality and packaging expectations.",
   },
 ];
+
+export type Pillar = {
+  title: string;
+  body: string;
+};
+
+/** Vision, mission and the values under both. */
+export const PILLARS: Pillar[] = [
+  {
+    title: "Vision",
+    body: "To become a market leader in frozen fruits and vegetables by ensuring sustainability, innovation and quality in every pack.",
+  },
+  {
+    title: "Mission",
+    body: "To minimise post-harvest losses, empower local farmers through sourcing partnerships, and bring convenient, nutritious frozen food to every household.",
+  },
+  {
+    title: "Values",
+    body: "Quality, sustainability and integrity — empowering farmers, minimising waste and delivering reliable, innovative frozen-food solutions.",
+  },
+];
+
+/** What the plant changes for the district around it. */
+export const IMPACT: Pillar[] = [
+  {
+    title: "150+ Livelihoods",
+    body: "Direct & indirect employment, empowering the rural workforce around Aligarh.",
+  },
+  {
+    title: "Farmer Empowerment",
+    body: "Buy-back arrangements and sourcing partnerships giving farmers stable demand.",
+  },
+  {
+    title: "Less Food Wastage",
+    body: "Modern agri-processing cuts post-harvest losses and promotes sustainable agriculture.",
+  },
+];
+
+export type Leader = {
+  name: string;
+  role: string;
+  bio: string;
+  /** Portrait under `public/about`, 413x531. */
+  image: string;
+};
+
+export const MANAGEMENT: Leader[] = [
+  {
+    name: "Dharmendra Kumar Varshney",
+    role: "Strategic Leadership",
+    bio: "Over two decades in the packaging industry, bringing deep expertise in operations, marketing and agri-produce. His visionary leadership steers the company toward innovation, sustainability and customer satisfaction.",
+    image: "/about/mgmt-dharmendra.jpg",
+  },
+  {
+    name: "Aniket Varshney",
+    role: "Food Technologist & R&D",
+    bio: "A Food Technologist by qualification and entrepreneur by passion, driving product development, quality control and innovation to keep the company ahead in a rapidly evolving food landscape.",
+    image: "/about/mgmt-aniket.jpg",
+  },
+];
+
+/** The Ram Nagar plant, and what it is already equipped for. */
+export const PLANT = {
+  address: "Plot No. 75, Village Ram Nagar, Tehsil Iglas, Aligarh",
+  points: [
+    "400 KVA power connection secured for current and future expansion.",
+    "Abundant borewell water for hygienic industrial use.",
+    "Skilled & semi-skilled local workforce with food technologists on board.",
+    "Advanced IQF line with integrated cold storage.",
+  ],
+} as const;

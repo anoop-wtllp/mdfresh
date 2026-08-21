@@ -25,9 +25,10 @@ export default function ProcessPage() {
         alt={CLIP.alt}
       />
       <JourneyFilm recap={false} />
-      <ColdBand />
+      
       <ProcessSteps />
-      <EnquiryCta />
+      <ColdBand />
+      <EnquiryCta tone="light" />
     </>
   );
 }

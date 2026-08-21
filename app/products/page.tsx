@@ -23,7 +23,7 @@ export default function ProductsPage() {
         alt={CLIP.alt}
       />
       <RangeSection />
-      <EnquiryCta />
+      <EnquiryCta tone="light" />
     </>
   );
 }

@@ -11,7 +11,8 @@ export function ProcessSteps() {
   return (
     <section
       aria-labelledby="steps-heading"
-      className="border-t rule py-28 sm:py-40"
+      // `on-light` retints the eyebrow and focus ring, both tuned for ink.
+      className="on-light border-t rule-ink bg-frost py-28 sm:py-40"
     >
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
         <div className="mb-16 max-w-2xl">
@@ -22,30 +23,30 @@ export function ProcessSteps() {
             as="h2"
             id="steps-heading"
             text="Six stages, sourcing to storage."
-            className="font-display text-[length:var(--text-title)] font-semibold leading-[1.05] text-frost"
+            className="font-display text-[length:var(--text-title)] font-semibold leading-[1.05] text-ink"
           />
         </div>
 
-        <ol className="grid gap-px overflow-hidden rounded-2xl border rule bg-[color-mix(in_oklab,var(--color-frost)_12%,transparent)] sm:grid-cols-2 lg:grid-cols-3">
+        <ol className="grid gap-px overflow-hidden rounded-2xl border rule-ink bg-[color-mix(in_oklab,var(--color-ink)_12%,transparent)] sm:grid-cols-2 lg:grid-cols-3">
           {JOURNEY.map((step, i) => (
             <Reveal
               key={step.id}
               delay={(i % 3) * 0.08}
               as="li"
-              className="group relative bg-ink p-8 transition-colors duration-500 hover:bg-ink-soft sm:p-10"
+              className="group relative bg-paper p-8 transition-colors duration-500 hover:bg-mint sm:p-10"
             >
-              <span className="font-mono text-[10px] tracking-[0.2em] text-frost-mute">
+              <span className="font-mono text-[10px] tracking-[0.2em] text-ink-mute">
                 {step.index}
               </span>
-              <h3 className="mt-5 font-display text-xl font-semibold text-frost">
+              <h3 className="mt-5 font-display text-xl font-semibold text-ink transition-colors duration-500 group-hover:text-leaf-deep motion-reduce:transition-none">
                 {step.title}
               </h3>
-              <p className="mt-3 text-[0.9375rem] leading-relaxed text-frost-dim">
+              <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink-dim">
                 {step.body}
               </p>
               <span
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-pea transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100 motion-reduce:transition-none"
+                className="pointer-events-none absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-leaf transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100 motion-reduce:transition-none"
               />
             </Reveal>
           ))}

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 import { useInView } from "framer-motion";
@@ -42,15 +43,9 @@ const STATS: Stat[] = [
   },
 ];
 
-const LINKS = [
-  {
-    title: "Backward linkages",
-    body: "with local farmers for consistent, traceable raw material.",
-  },
-  {
-    title: "Integrated cold chain",
-    body: "— from farm to freezer to your kitchen.",
-  },
+const POINTS = [
+  "Located in a prime agri-belt with easy access to fresh raw material.",
+  "Technically skilled workforce and food-technologist-led operations.",
 ];
 
 /**
@@ -96,9 +91,15 @@ function Counter({ stat }: { stat: Stat }) {
       // The animated digits are noise to a screen reader; the real value lives
       // in the sibling below and is announced instead.
       aria-hidden="true"
-      className="block font-display text-[length:var(--text-display)] font-semibold leading-none tracking-[-0.04em] text-frost tabular-nums"
+      // `--text-title`, not `--text-display`. These sit four to a row now, which
+      // leaves ~235px of cell: "400 KVA" sets at 307px in the display size and
+      // wrapped onto a second line. At title size it sets at 184px and every
+      // value clears the cell at each breakpoint.
+      className="block font-display text-[length:var(--text-title)] font-semibold leading-none tracking-[-0.04em] text-ink tabular-nums"
     >
-      {stat.value >= 1000 ? format(stat.value) : `${stat.prefix ?? ""}0${stat.suffix ?? ""}`}
+      {stat.value >= 1000
+        ? format(stat.value)
+        : `${stat.prefix ?? ""}0${stat.suffix ?? ""}`}
     </span>
   );
 }
@@ -108,57 +109,65 @@ export function AboutSection() {
     <section
       id="about"
       aria-labelledby="about-heading"
-      className="relative border-t rule bg-ink-soft py-28 sm:py-40"
+      // `on-light` retints the eyebrow and the focus ring, both tuned for
+      // ink and washed out on this ground.
+      className="on-light relative border-t rule-ink bg-frost py-28 sm:py-40"
     >
       <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
-        <div className="grid gap-14 lg:grid-cols-12">
-          <div className="lg:col-span-5">
+        <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-14">
+          <div className="lg:col-span-6">
             <Reveal>
-              <p className="eyebrow mb-6">About M.D. Fresh Veg</p>
+              <p className="eyebrow mb-6">Who we are</p>
             </Reveal>
             <RevealWords
               as="h2"
               id="about-heading"
-              text="Processing, packaging and cold-storage, under one roof."
-              className="font-display text-[length:var(--text-title)] font-semibold leading-[1.05] text-frost"
+              text="End-to-end control, farm to freezer."
+              className="font-display text-[length:var(--text-title)] font-semibold leading-[1.05] text-ink"
             />
             <Reveal delay={0.15}>
-              <p className="mt-7 max-w-md text-[length:var(--text-lead)] leading-relaxed text-frost-dim">
-                Established in 2010, we specialise in the processing, packaging
-                and cold-storage of frozen vegetables and fruits using
-                cutting-edge Individual Quick Freezing (IQF) technology at our
-                plant in Ram Nagar, Aligarh.
+              <p className="mt-7 max-w-lg text-[length:var(--text-lead)] leading-relaxed text-ink-dim">
+                M.D. Fresh Veg Private Limited specialises in the processing,
+                packaging and cold-storage of frozen vegetables and fruits using
+                cutting-edge Individual Quick Freezing (IQF) technology. With a
+                strong agricultural foundation and direct farmer linkages, we
+                deliver premium quality, longer shelf life and export-ready
+                produce.
+              </p>
+            </Reveal>
+            <Reveal delay={0.2}>
+              <p className="mt-5 max-w-lg text-[0.9375rem] leading-relaxed text-ink-dim">
+                Our strength lies in end-to-end control of sourcing, processing
+                and cold-chain distribution — enabling us to serve retail,
+                HORECA, food processors, institutional buyers and exports.
               </p>
             </Reveal>
 
             <ul className="mt-9 space-y-4">
-              {LINKS.map((link, i) => (
-                <Reveal key={link.title} delay={0.22 + i * 0.08} as="li">
+              {POINTS.map((point, i) => (
+                <Reveal key={point} delay={0.26 + i * 0.08} as="li">
                   <span className="flex gap-4">
                     <span
                       aria-hidden="true"
-                      className="mt-2.5 h-1.5 w-1.5 shrink-0 rotate-45 bg-pea"
+                      className="mt-2.5 h-1.5 w-1.5 shrink-0 rotate-45 bg-leaf"
                     />
-                    <span className="text-[0.9375rem] leading-relaxed text-frost-dim">
-                      <strong className="font-medium text-frost">
-                        {link.title}
-                      </strong>{" "}
-                      {link.body}
+                    <span className="text-[0.9375rem] leading-relaxed text-ink-dim">
+                      {point}
                     </span>
                   </span>
                 </Reveal>
               ))}
             </ul>
 
-            <Reveal delay={0.38}>
+            <Reveal delay={0.42}>
               <Link
                 href="/process"
-                className="group mt-10 inline-flex items-center gap-3 rounded-full border rule px-7 py-3.5 text-sm font-medium text-frost transition-colors duration-300 hover:border-pea hover:bg-pea hover:text-ink"
+                className="group mt-10 inline-flex items-center gap-3 rounded-full border rule-ink px-7 py-3.5 text-sm font-medium text-ink transition-colors duration-300 hover:border-leaf-deep hover:bg-leaf-deep hover:text-paper"
               >
                 See how we do it
                 <span
                   aria-hidden="true"
-                  className="transition-transform duration-300 group-hover:translate-x-1"
+                  className="transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none"
                 >
                   &rarr;
                 </span>
@@ -166,29 +175,43 @@ export function AboutSection() {
             </Reveal>
           </div>
 
-          <dl className="grid gap-px overflow-hidden rounded-2xl border rule bg-[color-mix(in_oklab,var(--color-frost)_12%,transparent)] sm:grid-cols-2 lg:col-span-7">
-            {STATS.map((stat, i) => (
-              <Reveal
-                key={stat.label}
-                delay={i * 0.08}
-                className="bg-ink-soft p-8"
-              >
-                <Counter stat={stat} />
-                <dt className="mt-5 text-sm font-medium text-frost">
-                  <span className="sr-only">
-                    {stat.prefix ?? ""}
-                    {stat.value}
-                    {stat.suffix ?? ""} —{" "}
-                  </span>
-                  {stat.label}
-                </dt>
-                <dd className="mt-2 text-[0.9375rem] leading-relaxed text-frost-mute">
-                  {stat.note}
-                </dd>
-              </Reveal>
-            ))}
-          </dl>
+          <Reveal delay={0.2} className="lg:col-span-6">
+            <figure className="overflow-hidden rounded-2xl border rule-ink">
+              <Image
+                src="/about/farmer.jpg"
+                alt="A farmer in a wide-brimmed hat holding a woven basket of freshly picked green produce in a misty field."
+                width={1500}
+                height={840}
+                quality={90}
+                sizes="(min-width: 1024px) 40rem, (min-width: 640px) 90vw, 92vw"
+                className="h-auto w-full object-cover"
+              />
+            </figure>
+          </Reveal>
         </div>
+
+        <dl className="mt-16 grid gap-px overflow-hidden rounded-2xl border rule-ink bg-[color-mix(in_oklab,var(--color-ink)_12%,transparent)] sm:grid-cols-2 lg:grid-cols-4">
+          {STATS.map((stat, i) => (
+            <Reveal
+              key={stat.label}
+              delay={(i % 4) * 0.08}
+              className="bg-paper p-8"
+            >
+              <Counter stat={stat} />
+              <dt className="mt-5 text-sm font-medium text-ink">
+                <span className="sr-only">
+                  {stat.prefix ?? ""}
+                  {stat.value}
+                  {stat.suffix ?? ""} —{" "}
+                </span>
+                {stat.label}
+              </dt>
+              <dd className="mt-2 text-[0.9375rem] leading-relaxed text-ink-mute">
+                {stat.note}
+              </dd>
+            </Reveal>
+          ))}
+        </dl>
       </div>
     </section>
   );
